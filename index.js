@@ -269,7 +269,7 @@ module.exports = function (f, lower, upper) {
     }
 
     return {
-        x: x,
+        solution: x,
         fval: fval,
         info: info,
         output: {
