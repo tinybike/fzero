@@ -1,0 +1,40 @@
+{
+  "name": "fzero",
+  "version": "0.1.0",
+  "description": "Find a zero of a univariate function.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/tape/bin/tape ./test/*.js | ./node_modules/tap-spec/bin/cmd.js",
+    "lint": "jshint index.js",
+    "coverage": "istanbul cover ./node_modules/tape/bin/tape --report lcovonly -- ./test/*.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tinybike/fzero.git"
+  },
+  "keywords": [
+    "zero",
+    "root",
+    "function",
+    "solve"
+  ],
+  "author": "Jack Peterson <jack@tinybike.net>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/tinybike/fzero/issues"
+  },
+  "homepage": "https://github.com/tinybike/fzero#readme",
+  "dependencies": {
+    "decimal.js": "^5.0.3"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.0",
+    "coveralls": "^2.11.6",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "istanbul": "^0.4.2",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.4.0",
+    "uglify-js": "^2.6.1"
+  }
+}
