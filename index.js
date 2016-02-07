@@ -59,16 +59,17 @@ module.exports = function (f, lower, upper) {
     fb = f(b);
     nfev += 1;
 
+    var u, fu;
     if (b.lt(a)) {
-        var u = a;
+        u = a;
         a = b;
         b = u;
-        var fu = fa;
+        fu = fa;
         fa = fb;
         fb = fu;
     }
 
-    if (!(fa.s * fb.s <= 0)) {
+    if (fa.s * fb.s > 0) {
         throw new Error("Not a valid initial bracketing");
     }
 
@@ -93,7 +94,7 @@ module.exports = function (f, lower, upper) {
     var fd = fu;
     var fe = fu;
     var mba = mu.times(b.minus(a));
-    var c;
+    var c, df;
     while (niter < maxiter && nfev < maxiter) {
         switch (itype) {
         case 1:
@@ -111,7 +112,7 @@ module.exports = function (f, lower, upper) {
                     c = a.plus(b).dividedBy(new Decimal(2));
                 }
                 d = u;
-                var df = fu;
+                df = fu;
                 itype = 5;
             }
             break;
