@@ -42,7 +42,15 @@ function unique(arr) {
 var mu = new Decimal("0.5");
 var eps = new Decimal("0.001");
 var tolx = new Decimal(0);
-var maxiter = 250;
+var maxiter = 100;
+
+function toDecimal(x) {
+    if (x && x.constructor !== Decimal) {
+        if (x.toFixed && x.toFixed.constructor === Function) x = x.toFixed();
+        x = new Decimal(x);
+    }
+    return x;
+}
 
 module.exports = function (f, lower, upper) {
 
@@ -60,10 +68,10 @@ module.exports = function (f, lower, upper) {
 
     // Prepare...
     a = new Decimal(lower);
-    fa = f(a);
+    fa = toDecimal(f(a.toString()));
     nfev = 1;
     b = new Decimal(upper);
-    fb = f(b);
+    fb = toDecimal(f(b.toString()));
     nfev += 1;
 
     var u, fu;
@@ -196,7 +204,7 @@ module.exports = function (f, lower, upper) {
 
         // Calculate new point.
         x = c;
-        fval = f(c);
+        fval = toDecimal(f(c));
         var fc = fval;
         niter++;
         nfev++;

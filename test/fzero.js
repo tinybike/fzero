@@ -5,10 +5,10 @@ var Decimal = require("decimal.js");
 var fzero = require("../");
 
 function cos(x) {
-    return new Decimal(Math.cos(x.toNumber()));
+    return Math.cos(Number(x)).toString();
 }
 function exp(x) {
-    return new Decimal(Math.exp(-x.toNumber()) - 2);
+    return (Math.exp(-Number(x)) - 2).toString();
 }
 
 test("fzero", function (t) {
