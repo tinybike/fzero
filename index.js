@@ -32,11 +32,6 @@ function unique(arr) {
     return a;
 }
 
-var mu = new Decimal("0.5");
-var eps = new Decimal("0.001");
-var tolx = new Decimal(0);
-var maxiter = 100;
-
 function toDecimal(x) {
     if (x && x.constructor !== Decimal) {
         if (x.toFixed && x.toFixed.constructor === Function) x = x.toFixed();
@@ -45,10 +40,16 @@ function toDecimal(x) {
     return x;
 }
 
-module.exports = function (f, lower, upper) {
+module.exports = function (f, lower, upper, options) {
+    options = options || {};
+    var mu = toDecimal(options.mu) || new Decimal("0.5");
+    var eps = toDecimal(options.eps) || new Decimal("0.001");
+    var tolx = toDecimal(options.tolx) || new Decimal(0);
+    var maxiter = options.maxiter || 100;
+    var maxfev = options.maxfev || maxiter;
 
     // The default exit flag if exceeded number of iterations.
-    var info = 0;
+    var code = 0;
     var niter = 0;
     var nfev = 0;
 
@@ -103,14 +104,14 @@ module.exports = function (f, lower, upper) {
     var fe = fu;
     var mba = mu.times(b.minus(a));
     var c, df;
-    while (niter < maxiter && nfev < maxiter) {
+    while (niter < maxiter && nfev < maxfev) {
         switch (itype) {
         case 1:
             // The initial test.
             if (b.minus(a).lte(u.abs().times(eps).times(new Decimal(2)).plus(tolx).times(new Decimal(2)))) {
                 x = u;
                 fval = fu;
-                info = 1;
+                code = 1;
             } else {
                 if (fa.abs().lte(fb.abs().times(new Decimal(1000))) && (fb.abs().lte(fa.abs().times(new Decimal(1000))))) {
                     // Secant step.
@@ -228,7 +229,7 @@ module.exports = function (f, lower, upper) {
             a = b;
             fb = fc;
             fa = fb;
-            info = 1;
+            code = 1;
         } else {
             // This should never happen.
             throw new Error("zero point is not bracketed");
@@ -242,7 +243,7 @@ module.exports = function (f, lower, upper) {
             fu = fb;
         }
         if (b.minus(a).lte(u.abs().times(eps).times(new Decimal(2)).plus(tolx))) {
-            info = 1;
+            code = 1;
         }
 
         // Skip bisection step if successful reduction.
@@ -256,7 +257,7 @@ module.exports = function (f, lower, upper) {
     } // while
 
     // Check solution for a singularity by examining slope.
-    if (info === 1) {
+    if (code === 1) {
         var m;
         if (new Decimal(1e6).gt(new Decimal("0.5").dividedBy(eps.plus(tolx)))) {
             m = new Decimal(1e6);
@@ -264,17 +265,17 @@ module.exports = function (f, lower, upper) {
             m = new Decimal("0.5").dividedBy(eps.plus(tolx));
         }
         if (!b.minus(a).eq(new Decimal(0)) && fb.minus(fa).dividedBy(b.minus(a)).dividedBy(slope0).gt(m)) {
-            info = -5;
+            code = -5;
         }
     }
 
     return {
         solution: x,
         fval: fval,
-        info: info,
-        output: {
+        code: code,
+        diagnostic: {
             iterations: niter,
-            funcCount: nfev,
+            functionEvals: nfev,
             bracketx: [a, b],
             brackety: [fa, fb]
         }

@@ -24,13 +24,31 @@ A minified, browserified file `dist/fzero.min.js` is included for use in the bro
 ```html
 <script src="dist/fzero.min.js" type="text/javascript"></script>
 ```
-`fzero` is a function that takes 3 arguments: the function to find the zero of, a lower-bound for the zero, and an upper-bound for the zero.  Note: since `fzero` uses decimal.js for arithmetic, the input function should accept a string input (rather than a JS number).
+`fzero` is a function that takes 3 required arguments: the function to find the zero of, a lower-bound for the zero, and an upper-bound for the zero.  A fourth optional argument can be used to adjust fzero's settings; see tests for details.
 ```javascript
 var myFunction = function (x) { Math.cos(Number(x)); };
 var lowerBound = 0;
 var upperBound = 3;
-var zero = fzero(myFunction, lowerBound, upperBound);
+var options = {maxiter: 50};
+var zero = fzero(myFunction, lowerBound, upperBound, options);
 ```
+`fzero` returns an object that has the following fields:
+
+- `solution`: `x` such that `myFunction(x) = 0`
+- `fval`: The numerical value of `myFunction` at `solution`.
+- `code`: Exit flag which can have one of the following values.
+    - `1`: The algorithm converged to a solution.
+    - `0`: Maximum number of iterations or function evaluations has been reached.
+    - `-1`: The algorithm has been terminated from user output function.
+    - `-5`: The algorithm may have converged to a singular point.
+- `diagnostic`: An object which has the following fields.
+    - `iterations`: The number of iterations completed.
+    - `functionEvals`: Number of times `myFunction` was evaluated.
+    - `bracketx`: An array `[lower, upper]` with the ending lower and upper x-bounds.
+    - `brackety`: An array `[f(lower), f(upper)]` with the ending lower and upper y-bounds.
+
+Note: `fzero` uses [decimal.js](https://github.com/MikeMcl/decimal.js/) for arithmetic, so the input function should accept a string input (rather than a JS number).
+
 Tests
 -----
 Unit tests are included in `test/`, and can be run using npm:
