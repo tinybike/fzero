@@ -22,7 +22,13 @@ A minified, browserified file `dist/fzero.min.js` is included for use in the bro
 ```html
 <script src="dist/fzero.min.js" type="text/javascript"></script>
 ```
-
+`fzero` is a function that takes 3 arguments: the function to find the zero of, a lower-bound for the zero, and an upper-bound for the zero.  Note: since `fzero` uses decimal.js for arithmetic, the input function should accept a string input (rather than a JS number).
+```javascript
+var myFunction = function (x) { Math.cos(Number(x)); };
+var lowerBound = 0;
+var upperBound = 3;
+var zero = fzero(myFunction, lowerBound, upperBound);
+```
 Tests
 -----
 Unit tests are included in `test/`, and can be run using npm:
