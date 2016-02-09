@@ -79,7 +79,7 @@ module.exports = function (f, lower, upper, options) {
     }
 
     if (fa.s * fb.s > 0) {
-        throw new Error("Not a valid initial bracketing");
+        throw new Error("Invalid initial bracketing");
     }
 
     var slope0 = fb.minus(fa).dividedBy(b.minus(a));
@@ -232,7 +232,7 @@ module.exports = function (f, lower, upper, options) {
             code = 1;
         } else {
             // This should never happen.
-            throw new Error("zero point is not bracketed");
+            throw new Error("Zero point is not bracketed");
         }
 
         if (fa.abs().lt(fb.abs())) {
