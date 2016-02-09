@@ -198,7 +198,7 @@ module.exports = function (f, lower, upper, options) {
 
         // Calculate new point.
         x = c;
-        fval = toDecimal(f(c));
+        fval = toDecimal(f(c.toString()));
         var fc = fval;
         niter++;
         nfev++;
@@ -270,14 +270,14 @@ module.exports = function (f, lower, upper, options) {
     }
 
     return {
-        solution: x,
-        fval: fval,
+        solution: x.toFixed(),
+        fval: fval.toString(),
         code: code,
         diagnostic: {
             iterations: niter,
             functionEvals: nfev,
-            bracketx: [a, b],
-            brackety: [fa, fb]
+            bracketx: [a.toFixed(), b.toFixed()],
+            brackety: [fa.toString(), fb.toString()]
         }
     };
 };
