@@ -24,13 +24,18 @@ A minified, browserified file `dist/fzero.min.js` is included for use in the bro
 ```html
 <script src="dist/fzero.min.js" type="text/javascript"></script>
 ```
-`fzero` is a function that takes 3 required arguments: the function to find the zero of, a lower-bound for the zero, and an upper-bound for the zero.  A fourth optional argument can be used to adjust fzero's settings; see tests for details.
+`fzero` is a function that takes 3 required arguments: the function to find the zero of, a lower-bound for the zero, and an upper-bound for the zero.  A fourth optional argument can be used to adjust fzero's settings; for example, `maxiter: 50` sets the maximum number of iterations to 50, and `verbose: true` prints details of each iteration.  (See tests for details.)
 ```javascript
 var myFunction = function (x) { Math.cos(Number(x)); };
 var lowerBound = 0;
 var upperBound = 3;
 var options = {maxiter: 50};
-var zero = fzero(myFunction, lowerBound, upperBound, options);
+var zero = fzero(myFunction, [lowerBound, upperBound], options);
+```
+If you don't know the exact bounds, you can simply pass `fzero` an initial guess instead:
+```javascript
+var initialGuess = 2;
+var zero = fzero(myFunction, initialGuess, options);
 ```
 `fzero` returns an object that has the following fields:
 
