@@ -118,7 +118,8 @@ module.exports = function (f, bounds, options) {
                     break;
                 }
             }
-            aa = aa.times(new Decimal(Math.random().toString())).plus(new Decimal(tries*(Math.random() - 0.5).toString()));
+            if (!options.randomize) break;
+            aa = aa.times(new Decimal(Math.random().toString())).plus(new Decimal((Math.random() - 0.5).toString()));
             fa = toDecimal(f(aa.toString()));
         } while (!bracketed && ++tries < maxiter);
     }

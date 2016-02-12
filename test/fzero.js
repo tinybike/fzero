@@ -74,6 +74,25 @@ test("fzero", function (t) {
     trial({
         f: cos,
         label: "cos",
+        bounds: 1.0,
+        expected: (Math.PI / 2).toFixed(8)
+    });
+    trial({
+        f: cos,
+        label: "cos",
+        bounds: [1.0],
+        expected: (Math.PI / 2).toFixed(8)
+    });
+    trial({
+        f: cos,
+        label: "cos",
+        bounds: [1.0],
+        options: {randomize: true},
+        expected: (Math.PI / 2).toFixed(8)
+    });
+    trial({
+        f: cos,
+        label: "cos",
         bounds: [0, 3],
         options: {eps: "0.05"},
         expected: (Math.PI / 2).toFixed(8)
@@ -168,21 +187,17 @@ test("fzero", function (t) {
     });
     trial({
         f: function (n) {
-            var q = [new Decimal(10),      // outcome 1 shares
-                     new Decimal(10),      // outcome 2 shares
-                     new Decimal(10),      // outcome 3 shares
-                     new Decimal(10),      // outcome 4 shares
-                     new Decimal(10)];     // outcome 5 shares
-            var i = 0;                     // array index of outcome to trade
-            var a = new Decimal("0.0079"); // LS-LMSR alpha
-            var xi = new Decimal("0.3");   // price cap
-            var ans = lslmsr(n, q, i, a, xi);
-            return ans;
+            var q = [new Decimal("659.90262467263840222037"),
+                     new Decimal("666.57262467263840222039")];
+            var i = 0;
+            var a = new Decimal("0.00790000000000000001");
+            var xi = new Decimal("0.5");
+            return lslmsr(n, q, i, a, xi);
         },
-        label: "lslmsr(n, [10, 10, 10, 10, 10], 0, '0.0079', '0.3')",
-        bounds: 0.5,
-        expected: "0.18973664"
-    });
+        label: "lslmsr(n, ['659.90262467263840222037', '666.57262467263840222039'], 0, '0.00790000000000000001', '0.5')",
+        bounds: [1e-12, 1000],
+        expected: "6.33231266"
+    })
     trial({
         f: function (n) {
             var q = [new Decimal(10),      // outcome 1 shares
@@ -197,7 +212,7 @@ test("fzero", function (t) {
             return ans;
         },
         label: "lslmsr(n, [10, 10, 10, 10, 10], 0, '0.0079', '0.3')",
-        bounds: [0.5],
+        bounds: [1e-12, 1000],
         expected: "0.18973664"
     });
     trial({
@@ -211,7 +226,7 @@ test("fzero", function (t) {
             return ans;
         },
         label: "lslmsr(n, ['71.43667960674091200687', '72.6286796067409120068'], 0, '0.00790000000000000001', '0.6')",
-        bounds: 0.5,
+        bounds: [1e-12, 1000],
         options: {verbose: true},
         expected: "1.61713310"
     });
