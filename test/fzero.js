@@ -35,9 +35,7 @@ function lslmsr(n, q, i, a, xi) {
         qj[j] = q[j];
         sum_q = sum_q.plus(q[j]);
     }
-    // console.log(q[0].toString(), q[1].toString());
     qj.splice(i, 1);
-    // console.log(qj[0].toString());
     var q_plus_n = n.plus(sum_q);
     var b = a.times(q_plus_n);
     var exp_qi = q[i].plus(n).dividedBy(b).exp();
@@ -60,7 +58,6 @@ function lslmsr(n, q, i, a, xi) {
 
 
 test("fzero", function (t) {
-    // t.plan(15);
     var trial = function (tr) {
         var code = (tr.code === undefined) ? 1 : tr.code;
         var options = (tr.options === undefined) ? "" : ", " + JSON.stringify(tr.options);
@@ -215,7 +212,7 @@ test("fzero", function (t) {
         },
         label: "lslmsr(n, ['71.43667960674091200687', '72.6286796067409120068'], 0, '0.00790000000000000001', '0.6')",
         bounds: 0.5,
-        options: {verbose: false},
+        options: {verbose: true},
         expected: "1.61713310"
     });
     trial({
@@ -233,9 +230,8 @@ test("fzero", function (t) {
         options: {tolx: 1e-12, maxiter: 1000},
         expected: "1.61713310"
     });
-
-    t.throws(function () { fzero(log, 2, 3); }, /Invalid initial bracketing/, "fzero(log, 2, 3) throws Error('Invalid initial bracketing')");
-    t.throws(function () { fzero(log, -1, 0); }, /Zero point is not bracketed/, "fzero(log, -1, 0) throws Error('Zero point not bracketed')");
+    t.throws(function () { fzero(log, [2, 3]); }, /Invalid initial bracketing/, "fzero(log, 2, 3) throws Error('Invalid initial bracketing')");
+    t.throws(function () { fzero(log, [-1, 0]); }, /Zero point is not bracketed/, "fzero(log, -1, 0) throws Error('Zero point not bracketed')");
     t.throws(function () { fzero(exp); }, /Initial guess required/, "fzero(exp)");
     t.end();
 });

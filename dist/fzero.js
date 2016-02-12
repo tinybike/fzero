@@ -89,28 +89,38 @@ module.exports = function (f, bounds, options) {
             console.log("Search for an interval around", a.toString(), "containing a sign change:");
             console.log("count\ta\t\tf(a)\t\t\t\tb\t\tf(b)");
         }
+        var bracketed, blist;
         var aa = (a.eq(new Decimal(0))) ? new Decimal(1) : a;
-        var blist = [
-            aa.times(new Decimal("0.9")),
-            aa.times(new Decimal("1.1")),
-            aa.minus(new Decimal(1)),
-            aa.plus(new Decimal(1)),
-            aa.times(new Decimal("0.5")),
-            aa.times(new Decimal("1.5")),
-            aa.neg(),
-            aa.times(new Decimal(2)),
-            aa.times(new Decimal(10)).neg(),
-            aa.times(new Decimal(10))
-        ];
-        for (var j = 0, len = blist.length; j < len; ++j) {
-            b = blist[j];
-            fb = toDecimal(f(b.toString()));
-            if (verbose) {
-                console.log(nfev + "\t\t" + a + "\t\t" + fa + "\t\t" + b + "\t\t" + fb);
+        var tries = 0;
+        do {
+            blist = [
+                aa.times(new Decimal("0.9")),
+                aa.times(new Decimal("1.1")),
+                aa.minus(new Decimal(1)),
+                aa.plus(new Decimal(1)),
+                aa.times(new Decimal("0.5")),
+                aa.times(new Decimal("1.5")),
+                aa.neg(),
+                aa.times(new Decimal(2)),
+                aa.times(new Decimal(10)).neg(),
+                aa.times(new Decimal(10))
+            ];
+            for (var j = 0, len = blist.length; j < len; ++j) {
+                b = blist[j];
+                fb = toDecimal(f(b.toString()));
+                if (verbose) {
+                    console.log(nfev + "\t\t" + aa + "\t\t" + fa + "\t\t" + b + "\t\t" + fb);
+                }
+                nfev += 1;
+                if (fa.s * fb.s <= 0) {
+                    a = aa;
+                    bracketed = true;
+                    break;
+                }
             }
-            nfev += 1;
-            if (fa.s * fb.s <= 0) break;
-        }
+            aa = aa.times(new Decimal(Math.random().toString())).plus(new Decimal(tries*(Math.random() - 0.5).toString()));
+            fa = toDecimal(f(aa.toString()));
+        } while (!bracketed && ++tries < maxiter);
     }
 
     var u, fu;
