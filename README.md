@@ -26,7 +26,7 @@ A minified, browserified file `dist/fzero.min.js` is included for use in the bro
 ```
 `fzero` is a function that takes 3 required arguments: the function to find the zero of, a lower-bound for the zero, and an upper-bound for the zero.  A fourth optional argument can be used to adjust fzero's settings; for example, `maxiter: 50` sets the maximum number of iterations to 50, and `verbose: true` prints details of each iteration.  (See tests for details.)
 ```javascript
-var myFunction = function (x) { Math.cos(Number(x)); };
+var myFunction = function (x) { return Math.cos(Number(x)).toString(); }
 var lowerBound = 0;
 var upperBound = 3;
 var options = {maxiter: 50};

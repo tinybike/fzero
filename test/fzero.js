@@ -187,19 +187,6 @@ test("fzero", function (t) {
     });
     trial({
         f: function (n) {
-            var q = [new Decimal("659.90262467263840222037"),
-                     new Decimal("666.57262467263840222039")];
-            var i = 0;
-            var a = new Decimal("0.00790000000000000001");
-            var xi = new Decimal("0.5");
-            return lslmsr(n, q, i, a, xi);
-        },
-        label: "lslmsr(n, ['659.90262467263840222037', '666.57262467263840222039'], 0, '0.00790000000000000001', '0.5')",
-        bounds: [1e-12, 1000],
-        expected: "6.33231266"
-    })
-    trial({
-        f: function (n) {
             var q = [new Decimal(10),      // outcome 1 shares
                      new Decimal(10),      // outcome 2 shares
                      new Decimal(10),      // outcome 3 shares
@@ -244,6 +231,19 @@ test("fzero", function (t) {
         bounds: [-0.78, 1.78],
         options: {tolx: 1e-12, maxiter: 1000},
         expected: "1.61713310"
+    });
+    trial({
+        f: function (n) {
+            var q = [new Decimal("659.90262467263840222037"),
+                     new Decimal("666.57262467263840222039")];
+            var i = 0;
+            var a = new Decimal("0.00790000000000000001");
+            var xi = new Decimal("0.5");
+            return lslmsr(n, q, i, a, xi);
+        },
+        label: "lslmsr(n, ['659.90262467263840222037', '666.57262467263840222039'], 0, '0.00790000000000000001', '0.5')",
+        bounds: [1e-12, 1000],
+        expected: "6.33231266"
     });
     t.throws(function () { fzero(log, [2, 3]); }, /Invalid initial bracketing/, "fzero(log, 2, 3) throws Error('Invalid initial bracketing')");
     t.throws(function () { fzero(log, [-1, 0]); }, /Zero point is not bracketed/, "fzero(log, -1, 0) throws Error('Zero point not bracketed')");
