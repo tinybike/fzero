@@ -17,14 +17,10 @@ gulp.task("lint", function (callback) {
 });
 
 gulp.task("build", function (callback) {
-    cp.exec("./node_modules/browserify/bin/cmd.js ./exports.js | "+
-            "./node_modules/uglify-js/bin/uglifyjs > ./dist/fzero.min.js",
-            function (err, stdout) {
+    cp.exec("./node_modules/browserify/bin/cmd.js ./exports.js | ./node_modules/uglify-js/bin/uglifyjs > ./dist/fzero.min.js", function (err, stdout) {
         if (err) throw err;
         if (stdout) process.stdout.write(stdout);
-        cp.exec("./node_modules/browserify/bin/cmd.js ./exports.js "+
-                "> ./dist/fzero.js",
-                function (err, stdout) {
+        cp.exec("./node_modules/browserify/bin/cmd.js ./exports.js > ./dist/fzero.js", function (err, stdout) {
             if (err) throw err;
             if (stdout) process.stdout.write(stdout);
             callback();

@@ -1,6 +1,6 @@
 {
   "name": "fzero",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Find a zero of a univariate function.",
   "main": "index.js",
   "scripts": {
